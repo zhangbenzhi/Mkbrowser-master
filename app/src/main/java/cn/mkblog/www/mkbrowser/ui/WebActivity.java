@@ -1,5 +1,6 @@
 package cn.mkblog.www.mkbrowser.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -24,13 +25,20 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.mkblog.www.mkbrowser.R;
+import cn.mkblog.www.mkbrowser.utils.BrowseUtil;
 import cn.mkblog.www.mkbrowser.utils.CollectionUtil;
+import cn.mkblog.www.mkbrowser.utils.HttpDownloader;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * 参考资料：
@@ -44,7 +52,8 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
     private WebView webView;
     private ProgressBar progressBar;
     private EditText textUrl;
-    private ImageView webIcon, goBack, goForward, goHome, btnStart, collection, btnSign;
+    private ImageView webIcon, goBack, goForward, goHome, btnStart, collection, btnSign, browseIcon, download, btnUpdate,bg_iv;
+    private int[] backResouce = new int[]{R.drawable.bg01, R.drawable.bg03, R.drawable.bg04, R.drawable.bg02};
 
     private long exitTime = 0;
 
@@ -74,6 +83,31 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         initView();
         // 初始化 WebView
         initWeb();
+        getPemmsion();//请求权限
+    }
+
+    private void getPemmsion() {
+        new RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Observer<Boolean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     /**
@@ -90,6 +124,10 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         goHome = findViewById(R.id.goHome);
         collection = findViewById(R.id.collection);
         btnSign = findViewById(R.id.btnSign);
+        browseIcon = findViewById(R.id.browseIcon);
+        download = findViewById(R.id.download);
+        btnUpdate = findViewById(R.id.btnUpdate);
+        bg_iv=findViewById(R.id.bg_iv);
 
         // 绑定按钮点击事件
         btnStart.setOnClickListener(this);
@@ -98,6 +136,9 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         goHome.setOnClickListener(this);
         collection.setOnClickListener(this);
         btnSign.setOnClickListener(this);
+        browseIcon.setOnClickListener(this);
+        download.setOnClickListener(this);
+        btnUpdate.setOnClickListener(this);
 
         // 地址输入栏获取与失去焦点处理
         textUrl.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -241,6 +282,8 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
             progressBar.setVisibility(View.INVISIBLE);
 
             nowUrl = url;
+            //添加浏览记录
+            BrowseUtil.browse(WebActivity.this, url);
             // 改变标题
             setTitle(webView.getTitle());
             // 显示页面标题
@@ -369,6 +412,32 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
                 CollectionUtil.collect(this, nowUrl);
                 Toast.makeText(mContext, "添加书签成功", Toast.LENGTH_SHORT).show();
                 break;
+            //浏览历史
+            case R.id.browseIcon:
+                startActivityForResult(new Intent(this, MyBrowseActivity.class), 100);
+                break;
+            //下载
+            case R.id.download:
+                Toast.makeText(mContext, "正在下载中....", Toast.LENGTH_SHORT).show();
+                new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                int code = new HttpDownloader().downloadFiles(nowUrl, System.currentTimeMillis() + "");
+                                if (code == 1) {
+                                    toast("文件已存在");
+                                } else if (code == -1) {
+                                    toast("文件下载失败");
+                                } else if (code == 0) {
+                                    toast("文件下载成功");
+                                }
+                            }
+                        }
+                ).start();
+                break;
+            case R.id.btnUpdate:
+                bg_iv.setImageResource(backResouce[new Random().nextInt(4)]);
+                break;
         }
     }
 
@@ -390,6 +459,15 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void toast(final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**

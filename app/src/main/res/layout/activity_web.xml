@@ -59,6 +59,16 @@
                 android:src="@drawable/refresh" />
 
             <ImageView
+                android:id="@+id/btnUpdate"
+                android:layout_width="@dimen/top_bar_height"
+                android:layout_height="@dimen/top_bar_height"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#01000000"
+                android:padding="11dp"
+                android:src="@drawable/update_bg" />
+
+            <ImageView
                 android:id="@+id/btnSign"
                 android:layout_width="@dimen/top_bar_height"
                 android:layout_height="@dimen/top_bar_height"
@@ -123,7 +133,7 @@
                     android:src="@drawable/selector_right" />
 
             </RelativeLayout>
-            <!-- 收藏按钮 -->
+            <!-- 书签按钮 -->
             <RelativeLayout style="@style/NavItem">
 
                 <ImageView
@@ -131,6 +141,16 @@
                     style="@style/NavIcon"
                     android:contentDescription="@string/nav_collection"
                     android:src="@drawable/selector_collect" />
+
+            </RelativeLayout>
+            <!--浏览历史-->
+            <RelativeLayout style="@style/NavItem">
+
+                <ImageView
+                    android:id="@+id/browseIcon"
+                    style="@style/NavIcon"
+                    android:contentDescription="@string/nav_collection"
+                    android:src="@drawable/selector_browse" />
 
             </RelativeLayout>
 
@@ -144,7 +164,25 @@
                     android:src="@drawable/selector_home" />
 
             </RelativeLayout>
+
+            <!-- 下载按钮 -->
+            <RelativeLayout style="@style/NavItem">
+
+                <ImageView
+                    android:id="@+id/download"
+                    style="@style/NavIcon"
+                    android:src="@drawable/selector_download" />
+
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 
+
+    <ImageView
+        android:id="@+id/bg_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:scaleType="fitXY"
+        />
 </FrameLayout>
