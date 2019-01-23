@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".WebActivity"
+            android:name=".ui.WebActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true">
             <intent-filter>
@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MySignActivity"></activity>
+        <activity android:name=".ui.MySignActivity"></activity>
     </application>
 
 </manifest>

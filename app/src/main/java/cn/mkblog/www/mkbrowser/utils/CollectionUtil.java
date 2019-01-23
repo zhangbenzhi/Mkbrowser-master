@@ -1,4 +1,4 @@
-package cn.mkblog.www.mkbrowser;
+package cn.mkblog.www.mkbrowser.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

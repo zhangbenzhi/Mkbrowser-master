@@ -1,4 +1,4 @@
-package cn.mkblog.www.mkbrowser;
+package cn.mkblog.www.mkbrowser.adapter;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Predicate;
+
+import cn.mkblog.www.mkbrowser.R;
+import cn.mkblog.www.mkbrowser.utils.CollectionUtil;
 
 /**
  * @author 张本志
