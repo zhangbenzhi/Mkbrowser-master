@@ -51,7 +51,9 @@ public class MyBrowseAdapter extends RecyclerView.Adapter<MyBrowseAdapter.MySign
                 for (String str : signs) {
                     if (str.equals(signs.toArray()[i])) {
                         signs.remove(str);
+                        BrowseUtil.unBrowse(activity, str);
                         notifyDataSetChanged();
+                        break;
                     }
                 }
             }

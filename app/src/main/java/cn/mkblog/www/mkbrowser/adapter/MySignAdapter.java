@@ -51,7 +51,9 @@ public class MySignAdapter extends RecyclerView.Adapter<MySignAdapter.MySignView
                 for (String str : signs) {
                     if (str.equals(signs.toArray()[i])) {
                         signs.remove(str);
+                        CollectionUtil.unCollect(activity,str);
                         notifyDataSetChanged();
+                        break;
                     }
                 }
             }

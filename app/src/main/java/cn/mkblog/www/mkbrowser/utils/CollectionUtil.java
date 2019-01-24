@@ -37,6 +37,13 @@ public class CollectionUtil {
             save(context, collectSet);
         }
     }
+    public static void unCollect(Context context, String url) {
+        Set<String> collectSet = getCollectSet(context);
+        if (isCollected(context, url)) {
+            collectSet.remove(url);
+            save(context, collectSet);
+        }
+    }
 
     public static boolean isCollected(Context context, String url) {
         boolean isCollected = false;

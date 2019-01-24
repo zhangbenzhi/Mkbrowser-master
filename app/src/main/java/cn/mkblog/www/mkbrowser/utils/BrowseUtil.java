@@ -38,6 +38,14 @@ public class BrowseUtil {
         }
     }
 
+    public static void unBrowse(Context context, String url) {
+        Set<String> collectSet = getBrowseSet(context);
+        if (isBrowsed(context, url)) {
+            collectSet.remove(url);
+            save(context, collectSet);
+        }
+    }
+
     public static boolean isBrowsed(Context context, String url) {
         boolean isCollected = false;
         Set<String> collectSet = getBrowseSet(context);
